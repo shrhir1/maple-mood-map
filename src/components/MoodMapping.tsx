@@ -150,7 +150,9 @@ const MoodMapping: React.FC = () => {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [severity, setSeverity] = useState(5);
-  const [xp, setXp] = useState(0);
+  const [xp, setXp] = useState(() => {
+    try { return parseInt(localStorage.getItem("mapleXp") || "0", 10); } catch { return 0; }
+  });
   const [streak, setStreak] = useState(1);
   const [animStep, setAnimStep] = useState(0);
   const hasAnimated = useRef(false);
