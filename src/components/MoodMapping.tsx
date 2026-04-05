@@ -25,6 +25,43 @@ interface AIRecommendation {
   description: string;
 }
 
+interface MoodEntry {
+  emotion: string;
+  severity: number;
+  date: string;
+}
+
+const emotionEmojis: Record<string, string> = {
+  Happy: "😊", Sad: "😢", Anxious: "😰", Angry: "😠", Tired: "😴",
+};
+
+const getMoodHistory = (): MoodEntry[] => {
+  try {
+    return JSON.parse(localStorage.getItem("moodHistory") || "[]");
+  } catch { return []; }
+};
+
+const saveMoodEntry = (emotion: string, severity: number): MoodEntry[] => {
+  const history = getMoodHistory();
+  history.push({ emotion, severity, date: new Date().toISOString() });
+  localStorage.setItem("moodHistory", JSON.stringify(history));
+  return history;
+};
+
+const getRecurringWarning = (history: MoodEntry[]): string | null => {
+  const last7 = history.slice(-7);
+  const counts: Record<string, number> = {};
+  for (const e of last7) {
+    if (e.emotion !== "Happy" && e.severity >= 6) {
+      counts[e.emotion] = (counts[e.emotion] || 0) + 1;
+    }
+  }
+  for (const [emotion, count] of Object.entries(counts)) {
+    if (count >= 3) return emotion;
+  }
+  return null;
+};
+
 const emotions: Emotion[] = [
   { label: "Happy", icon: HappyFace, selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
   { label: "Sad", icon: SadFace, selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
@@ -86,6 +123,8 @@ const MoodMapping: React.FC = () => {
   const [aiRecommendations, setAiRecommendations] = useState<AIRecommendation[]>([]);
   const [escalate, setEscalate] = useState(false);
   const [escalateMessage, setEscalateMessage] = useState<string | null>(null);
+  const [moodHistory, setMoodHistory] = useState<MoodEntry[]>(getMoodHistory());
+  const [recurringEmotion, setRecurringEmotion] = useState<string | null>(null);
 
   useEffect(() => {
     if (hasAnimated.current) return;
@@ -310,7 +349,15 @@ const MoodMapping: React.FC = () => {
               )}
 
               <button
-                onClick={() => { setXp((x) => x + 10); setScreen("done"); }}
+                onClick={() => {
+                  setXp((x) => x + 10);
+                  if (selectedEmotion) {
+                    const updated = saveMoodEntry(selectedEmotion, severity);
+                    setMoodHistory(updated);
+                    setRecurringEmotion(getRecurringWarning(updated));
+                  }
+                  setScreen("done");
+                }}
                 className="w-full py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
               >
                 I tried something ✓
@@ -336,6 +383,35 @@ const MoodMapping: React.FC = () => {
                 <p className="text-4xl font-extrabold text-accent">🔥 {streak}</p>
                 <p className="text-base font-semibold mt-1" style={{ color: "#3D2B1F" }}>Day streak!</p>
               </div>
+
+              {/* Mood History pills */}
+              {moodHistory.length > 0 && (
+                <div className="w-full rounded-2xl p-5 border border-border mb-5 bg-white"
+                  style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.05)" }}>
+                  <p className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wide">Mood History</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {moodHistory.slice(-3).reverse().map((entry, i) => (
+                      <div key={i} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold"
+                        style={{ background: "#F5F3FF", color: "#3D2B1F" }}>
+                        <span>{emotionEmojis[entry.emotion] || "🫠"}</span>
+                        <span>{entry.severity}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Recurring emotion warning */}
+              {recurringEmotion && (
+                <div className="w-full rounded-2xl p-5 mb-5 flex gap-3 items-start"
+                  style={{ background: "#FFFBE6", border: "1px solid #F4E3A0" }}>
+                  <span className="text-xl flex-shrink-0">🌿</span>
+                  <p className="text-sm font-semibold" style={{ color: "#5C4A1E" }}>
+                    I've noticed you've been feeling {recurringEmotion.toLowerCase()} a lot lately. It might help to talk to someone you trust.
+                  </p>
+                </div>
+              )}
+
               <button
                 onClick={handleReset}
                 className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
