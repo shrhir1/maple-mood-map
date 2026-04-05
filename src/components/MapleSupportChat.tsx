@@ -14,16 +14,57 @@ interface MapleSupportChatProps {
 const SYSTEM_PROMPT =
   "You are Maple, a warm caring mental wellness mushroom companion. Help the user find real San Diego mental health resources including UCSD Counseling at caps.ucsd.edu, 211 San Diego at 211sandiego.org, and NAMI San Diego at namisandiego.org. Be warm, gentle, and supportive. Always recommend professional help for serious concerns.";
 
-const OPENING_MESSAGE =
-  "I can see you're going through something really hard. I'm here to help you find real support. What's on your mind?";
+const FALLBACK_OPENING =
+  "You're not alone 💛 Please reach out to UCSD Counseling at caps.ucsd.edu, or call 211 San Diego anytime. I'm also here to talk. What's on your mind?";
 
 const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "assistant", content: OPENING_MESSAGE },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [loadingResources, setLoadingResources] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Fetch SAMHSA resources on mount
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const res = await fetch(
+          "https://findtreatment.samhsa.gov/locator/listing?sAddr=San+Diego,CA&miles=10&MHonly=1&pageSize=3"
+        );
+        const data = await res.json();
+        const listings = data?.rows || data?.listings || data || [];
+        const facilities = (Array.isArray(listings) ? listings : []).slice(0, 3);
+
+        if (facilities.length > 0) {
+          const facilityList = facilities
+            .map((f: any) => {
+              const name = f.name1 || f.name || f.facilityName || "Unknown Facility";
+              const phone = f.phone || f.telephone || "N/A";
+              const addr = [f.street1 || f.address, f.city, f.state, f.zip]
+                .filter(Boolean)
+                .join(", ") || "Address not available";
+              return `${name} — ${phone} — ${addr}`;
+            })
+            .join("\n\n");
+
+          setMessages([
+            {
+              role: "assistant",
+              content: `You're not alone 💛 Here are some real resources near you that can help:\n\n${facilityList}\n\nI'm also here to talk. What's on your mind?`,
+            },
+          ]);
+        } else {
+          setMessages([{ role: "assistant", content: FALLBACK_OPENING }]);
+        }
+      } catch {
+        setMessages([{ role: "assistant", content: FALLBACK_OPENING }]);
+      } finally {
+        setLoadingResources(false);
+      }
+    };
+
+    fetchResources();
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -108,6 +149,16 @@ const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }
 
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+        {loadingResources && (
+          <div className="flex justify-start">
+            <div className="rounded-2xl px-4 py-3 flex gap-1.5 items-center"
+              style={{ background: "#FFF8F0", border: "1px solid #F0E0D0" }}>
+              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "0ms" }} />
+              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "150ms" }} />
+              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "300ms" }} />
+            </div>
+          </div>
+        )}
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
