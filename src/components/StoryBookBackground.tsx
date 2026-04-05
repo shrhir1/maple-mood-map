@@ -46,7 +46,7 @@ const StoryBookBackground: React.FC<{ children: React.ReactNode }> = ({ children
 
     {/* Rolling green hills */}
     <div className="absolute bottom-0 left-0 w-full pointer-events-none overflow-hidden">
-      <svg viewBox="0 0 800 100" preserveAspectRatio="none" className="w-full h-[12vh]">
+      <svg viewBox="0 0 800 100" preserveAspectRatio="none" className="w-full h-[20vh]">
         <style>{`
           @keyframes roll1 { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-15px); } }
           @keyframes roll2 { 0%,100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
