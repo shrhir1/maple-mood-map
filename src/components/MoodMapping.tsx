@@ -65,8 +65,8 @@ const getRecurringWarning = (history: MoodEntry[]): string | null => {
 const emotions: Emotion[] = [
   { label: "Angry", icon: AngryFaceBalloon, selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
   { label: "Anxious", icon: AnxiousFace, selectedBg: "#FFF3E6", selectedBorder: "#F69553" },
-  { label: "Sad", icon: SadFace, selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
   { label: "Tired", icon: TiredFace, selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
+  { label: "Sad", icon: SadFace, selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
   { label: "Happy", icon: HappyFace, selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
 ];
 
