@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
-import { Check, Heart } from "lucide-react";
+import { Check, Heart, Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
 import { getMapleResponse } from "@/lib/claude";
 import HappyFace from "./icons/HappyFace";
 import SadFace from "./icons/SadFace";
@@ -104,10 +110,25 @@ const MapleSpeechBubble: React.FC<{ message: string; expression: "waving" | "att
 
 /* ─── Brand badge ─── */
 const BrandBadge: React.FC = () => (
-  <button className="inline-flex items-center rounded-full px-5 py-2.5 backdrop-blur-sm text-base font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
-    style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
-    Mood Mapping
-  </button>
+  <div className="inline-flex items-center gap-1">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="inline-flex items-center justify-center rounded-full p-3 backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
+          style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
+          <Menu size={22} />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-48">
+        <DropdownMenuItem className="cursor-pointer font-medium">Mood History</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer font-medium">Account Details</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    <button className="inline-flex items-center rounded-full px-7 py-3 backdrop-blur-sm text-lg font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
+      style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
+      Mood Mapping
+    </button>
+  </div>
 );
 
 const MoodMapping: React.FC = () => {
