@@ -10,6 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "./ui/sheet";
 import { getMapleResponse } from "@/lib/claude";
 import MapleSupportChat from "./MapleSupportChat";
 import HappyFace from "./icons/HappyFace";
