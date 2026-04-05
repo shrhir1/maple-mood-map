@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
 import { Check, Heart, Menu } from "lucide-react";
