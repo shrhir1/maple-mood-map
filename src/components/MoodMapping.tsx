@@ -21,11 +21,11 @@ interface AIRecommendation {
 }
 
 const emotions: Emotion[] = [
+  { label: "Happy", emoji: "😊", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
   { label: "Sad", emoji: "😢", selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
-  { label: "Stressed", emoji: "😤", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
-  { label: "Angry", emoji: "angry", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
-  { label: "Fearful", emoji: "😨", selectedBg: "#EEFAF3", selectedBorder: "#52B788" },
-  { label: "Tired", emoji: "😴", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
+  { label: "Anxious", emoji: "😰", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
+  { label: "Angry", emoji: "😠", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
+  { label: "Tired", emoji: "😴", selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
 ];
 
 const getSeverityTip = (value: number): string => {
