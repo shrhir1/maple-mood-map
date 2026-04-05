@@ -93,9 +93,12 @@ const MoodMapping: React.FC = () => {
 
   const handleShowRecommendations = async () => {
     if (!selectedEmotion) return;
+    const currentEmotion = selectedEmotion;
+    const currentSeverity = severity;
+    console.log(`[MoodMapping] Calling getMapleResponse with emotion="${currentEmotion}", severity=${currentSeverity}`);
     setScreen("loading");
     try {
-      const result = await getMapleResponse(selectedEmotion, severity);
+      const result = await getMapleResponse(currentEmotion, currentSeverity);
       setAiMessage(result.mapleMessage);
       setAiRecommendations(result.recommendations);
       setEscalate(result.escalate);
