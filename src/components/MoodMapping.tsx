@@ -90,19 +90,19 @@ const MoodMapping: React.FC = () => {
               message="Hey! I'm Maple 🍄 How are you feeling today?"
             />
 
-            <div className="flex flex-wrap justify-center gap-2 mb-6 w-full">
+            <div className="flex justify-center gap-1.5 mb-6 w-full">
               {emotions.map((e) => (
                 <button
                   key={e.label}
                   onClick={() => setSelectedEmotion(e.label)}
-                  className={`flex flex-col items-center gap-1 px-4 py-3 rounded-2xl border-2 transition-all duration-200 font-semibold text-sm ${
+                  className={`flex flex-col items-center gap-0.5 px-2.5 py-2.5 rounded-2xl border-2 transition-all duration-200 font-semibold text-xs flex-1 min-w-0 ${
                     selectedEmotion === e.label
                       ? "border-primary bg-warm-red-light scale-105 shadow-md"
                       : "border-border bg-card hover:border-primary/40"
                   }`}
                 >
-                  <span className="text-2xl">{e.emoji}</span>
-                  <span className="text-foreground">{e.label}</span>
+                  <span className="text-xl">{e.emoji}</span>
+                  <span className="text-foreground truncate">{e.label}</span>
                 </button>
               ))}
             </div>
