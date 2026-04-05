@@ -1,42 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import Maple from "./Maple";
+import StoryBookBackground from "./StoryBookBackground";
+import { Check } from "lucide-react";
 
 type Screen = "welcome" | "severity" | "recommendations" | "done";
 
 interface Emotion {
   label: string;
   emoji: string;
+  tint: string;
 }
 
 const emotions: Emotion[] = [
-  { label: "Sad", emoji: "😢" },
-  { label: "Stressed", emoji: "😤" },
-  { label: "Angry", emoji: "😠" },
-  { label: "Fearful", emoji: "😨" },
-  { label: "Tired", emoji: "😴" },
+  { label: "Sad", emoji: "😢", tint: "bg-blue-50" },
+  { label: "Stressed", emoji: "😤", tint: "bg-orange-50" },
+  { label: "Angry", emoji: "😠", tint: "bg-red-50" },
+  { label: "Fearful", emoji: "😨", tint: "bg-purple-50" },
+  { label: "Tired", emoji: "😴", tint: "bg-slate-50" },
 ];
 
 const recommendations = [
-  {
-    icon: "📝",
-    title: "Journal it out",
-    description: "Write down your thoughts for 5 minutes. No rules, just let it flow.",
-  },
-  {
-    icon: "🚶",
-    title: "Take a short walk",
-    description: "Even 10 minutes outside can reset your mood.",
-  },
-  {
-    icon: "📞",
-    title: "Call a friend",
-    description: "Hearing a friendly voice can make a big difference.",
-  },
-  {
-    icon: "🧘",
-    title: "Try a meditation",
-    description: "Close your eyes, breathe deep, and let go for a few minutes.",
-  },
+  { icon: "📝", title: "Journal it out", description: "Write down your thoughts for 5 minutes. No rules, just let it flow." },
+  { icon: "🚶", title: "Take a short walk", description: "Even 10 minutes outside can reset your mood." },
+  { icon: "📞", title: "Call a friend", description: "Hearing a friendly voice can make a big difference." },
+  { icon: "🧘", title: "Try a meditation", description: "Close your eyes, breathe deep, and let go for a few minutes." },
 ];
 
 const getSeverityTip = (value: number): string => {
@@ -53,10 +40,24 @@ const MapleSpeechBubble: React.FC<{ message: string; expression: "waving" | "att
 }) => (
   <div className="flex flex-col items-center mb-6">
     <Maple expression={expression} />
-    <div className="relative bg-card rounded-2xl px-5 py-3 mt-2 shadow-sm border border-border max-w-[300px] text-center">
-      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-card border-l border-t border-border rotate-45" />
+    <div className="relative bg-warm-cream rounded-2xl px-5 py-3 mt-2 shadow-sm border border-border max-w-[300px] text-center">
+      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-warm-cream border-l border-t border-border rotate-45" />
       <p className="relative text-sm font-semibold text-foreground">{message}</p>
     </div>
+  </div>
+);
+
+/* ─── Brand badge ─── */
+const BrandBadge: React.FC = () => (
+  <div className="flex items-center gap-2 bg-warm-cream/80 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-sm border border-border">
+    <svg viewBox="0 0 100 120" width="18" height="22">
+      <rect x="30" y="48" width="40" height="52" rx="18" fill="hsl(40, 45%, 94%)" />
+      <ellipse cx="50" cy="38" rx="38" ry="26" fill="hsl(345, 55%, 35%)" />
+      <ellipse cx="50" cy="44" rx="36" ry="5" fill="hsl(345, 50%, 27%)" />
+      <ellipse cx="34" cy="28" rx="6" ry="4" fill="hsl(35, 30%, 68%)" transform="rotate(-10 34 28)" />
+      <ellipse cx="60" cy="22" rx="5.5" ry="3.5" fill="hsl(35, 30%, 68%)" transform="rotate(8 60 22)" />
+    </svg>
+    <span className="text-xs font-extrabold text-foreground tracking-tight">Mood Mapping</span>
   </div>
 );
 
@@ -86,63 +87,82 @@ const MoodMapping: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex justify-center items-center">
-      <div className="w-full max-w-[440px] px-6 py-10 flex flex-col items-center justify-center min-h-screen">
-        {/* Header */}
-        <h1 className="text-2xl font-extrabold text-primary mb-2 tracking-tight">
-          Mood Mapping
-        </h1>
+    <StoryBookBackground>
+      <div className="min-h-screen flex flex-col items-center">
+        {/* Brand badge - top left */}
+        <div className="w-full max-w-[460px] px-5 pt-4">
+          <BrandBadge />
+        </div>
 
-        {/* Grow area to vertically center content */}
-        <div className="flex-1 w-full flex flex-col items-center justify-center">
-          {/* Screen 1: Welcome */}
+        {/* Main content */}
+        <div className="w-full max-w-[460px] px-5 flex-1 flex flex-col items-center justify-center">
+
+          {/* ═══ Screen 1: Welcome ═══ */}
           {screen === "welcome" && (
-            <div className="w-full flex flex-col items-center">
-              {/* Maple entrance */}
+            <div className="w-full flex flex-col items-center -mt-4">
+              {/* Maple — large with glow */}
               <div
                 className={animStep >= 1 ? "anim-maple-enter" : ""}
                 style={{ opacity: animStep >= 1 ? undefined : 0 }}
               >
-                <div className="flex flex-col items-center mb-8">
-                  <div className="w-32 h-32">
-                    <Maple expression="waving" className="w-full h-full" />
-                  </div>
-                  {/* Speech bubble */}
-                  <div
-                    className={animStep >= 2 ? "anim-bubble-enter" : ""}
-                    style={{ opacity: animStep >= 2 ? undefined : 0 }}
-                  >
-                    <div className="relative bg-card rounded-2xl px-6 py-4 mt-3 shadow-md border border-border max-w-[340px] text-center">
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-card border-l border-t border-border rotate-45" />
-                      <p className="relative text-base font-semibold text-foreground">
-                        Hey! I'm Maple 🍄 How are you feeling today?
-                      </p>
+                <div className="flex flex-col items-center">
+                  <div className="relative">
+                    {/* Warm glow behind Maple */}
+                    <div className="absolute inset-0 rounded-full blur-2xl opacity-40" style={{
+                      background: "radial-gradient(circle, hsl(35, 70%, 85%) 0%, transparent 70%)",
+                      transform: "scale(1.6)",
+                    }} />
+                    <div className="relative w-40 h-48">
+                      <Maple expression="waving" className="w-full h-full drop-shadow-lg" />
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Emotion buttons — larger, more dynamic */}
-              <div className="grid grid-cols-5 gap-2 mb-8 w-full">
-                {emotions.map((e, i) => (
-                  <button
-                    key={e.label}
-                    onClick={() => setSelectedEmotion(e.label)}
-                    className={`flex flex-col items-center gap-1 py-4 px-1 rounded-2xl border-2 transition-all duration-200 font-semibold text-xs ${
-                      selectedEmotion === e.label
-                        ? "border-primary bg-warm-red-light scale-110 shadow-lg ring-2 ring-primary/20"
-                        : "border-border bg-card hover:border-primary/40 hover:scale-105 hover:shadow-md"
-                    } ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
-                    style={{
-                      opacity: animStep >= 3 ? undefined : 0,
-                      animationDelay: animStep >= 3 ? `${i * 100}ms` : undefined,
-                      animationFillMode: "forwards",
-                    }}
-                  >
-                    <span className="text-3xl">{e.emoji}</span>
-                    <span className="text-foreground text-xs font-bold mt-1">{e.label}</span>
-                  </button>
-                ))}
+              {/* Speech bubble — warm cream card */}
+              <div
+                className={animStep >= 2 ? "anim-bubble-enter" : ""}
+                style={{ opacity: animStep >= 2 ? undefined : 0 }}
+              >
+                <div className="relative bg-warm-cream rounded-3xl px-7 py-5 mt-3 shadow-md border border-border max-w-[360px] text-center">
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-warm-cream border-l border-t border-border rotate-45 rounded-tl-sm" />
+                  <p className="relative text-lg font-bold text-foreground leading-snug">
+                    Hey! I'm Maple 🍄<br/>
+                    <span className="text-base font-semibold text-muted-foreground">How are you feeling today?</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Emotion buttons — warm rounded cards */}
+              <div className="grid grid-cols-5 gap-2.5 mt-7 mb-5 w-full">
+                {emotions.map((e, i) => {
+                  const isSelected = selectedEmotion === e.label;
+                  return (
+                    <button
+                      key={e.label}
+                      onClick={() => setSelectedEmotion(e.label)}
+                      className={`flex flex-col items-center gap-1.5 py-4 px-1 rounded-[20px] border-2 transition-all duration-200 font-semibold
+                        ${isSelected
+                          ? `border-primary ${e.tint} shadow-lg ring-2 ring-primary/20 scale-105`
+                          : "border-border bg-warm-cream shadow-sm hover:border-primary/30 hover:shadow-md hover:scale-[1.03]"
+                        }
+                        ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
+                      style={{
+                        opacity: animStep >= 3 ? undefined : 0,
+                        animationDelay: animStep >= 3 ? `${i * 100}ms` : undefined,
+                        animationFillMode: "forwards",
+                      }}
+                    >
+                      <span className="text-[40px] leading-none">{e.emoji}</span>
+                      <span className="text-foreground text-[11px] font-bold mt-0.5">{e.label}</span>
+                      {isSelected && (
+                        <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                          <Check className="w-2.5 h-2.5 text-primary-foreground" strokeWidth={3} />
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
               {selectedEmotion && (
@@ -156,42 +176,32 @@ const MoodMapping: React.FC = () => {
             </div>
           )}
 
-          {/* Screen 2: Severity */}
+          {/* ═══ Screen 2: Severity ═══ */}
           {screen === "severity" && (
             <div className="w-full flex flex-col items-center animate-in fade-in duration-500">
               <MapleSpeechBubble
                 expression="attentive"
                 message={`On a scale of 1–10, how strong is this ${selectedEmotion?.toLowerCase()} feeling?`}
               />
-
-              <div className="w-full bg-card rounded-2xl p-6 border border-border shadow-md mb-5">
+              <div className="w-full bg-warm-cream rounded-2xl p-6 border border-border shadow-md mb-5">
                 <div className="flex justify-between text-xs font-semibold text-muted-foreground mb-3">
                   <span>Barely there</span>
                   <span>Overwhelming</span>
                 </div>
                 <input
-                  type="range"
-                  min={1}
-                  max={10}
-                  value={severity}
+                  type="range" min={1} max={10} value={severity}
                   onChange={(e) => setSeverity(Number(e.target.value))}
                   className="w-full h-3 rounded-full appearance-none cursor-pointer accent-primary"
-                  style={{
-                    background: `linear-gradient(to right, hsl(140, 25%, 45%) 0%, hsl(0, 45%, 40%) 100%)`,
-                  }}
+                  style={{ background: "linear-gradient(to right, hsl(140, 25%, 45%) 0%, hsl(0, 45%, 40%) 100%)" }}
                 />
                 <div className="text-center mt-4">
                   <span className="text-4xl font-extrabold text-primary">{severity}</span>
                   <span className="text-base text-muted-foreground font-semibold"> / 10</span>
                 </div>
               </div>
-
               <div className="w-full bg-warm-amber-light rounded-2xl p-5 border border-border mb-6">
-                <p className="text-sm text-foreground font-semibold text-center">
-                  🍄 {getSeverityTip(severity)}
-                </p>
+                <p className="text-sm text-foreground font-semibold text-center">🍄 {getSeverityTip(severity)}</p>
               </div>
-
               <button
                 onClick={() => setScreen("recommendations")}
                 className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
@@ -201,20 +211,13 @@ const MoodMapping: React.FC = () => {
             </div>
           )}
 
-          {/* Screen 3: Recommendations */}
+          {/* ═══ Screen 3: Recommendations ═══ */}
           {screen === "recommendations" && (
             <div className="w-full flex flex-col items-center animate-in fade-in duration-500">
-              <MapleSpeechBubble
-                expression="gentle"
-                message="Here are some things that might help 💛"
-              />
-
+              <MapleSpeechBubble expression="gentle" message="Here are some things that might help 💛" />
               <div className="w-full flex flex-col gap-3 mb-6">
                 {recommendations.map((r, i) => (
-                  <div
-                    key={i}
-                    className="bg-card rounded-2xl p-5 border border-border shadow-sm flex gap-4 items-start hover:shadow-lg hover:scale-[1.01] transition-all duration-200 cursor-pointer"
-                  >
+                  <div key={i} className="bg-warm-cream rounded-2xl p-5 border border-border shadow-sm flex gap-4 items-start hover:shadow-lg hover:scale-[1.01] transition-all duration-200 cursor-pointer">
                     <span className="text-3xl mt-0.5">{r.icon}</span>
                     <div>
                       <h3 className="font-bold text-foreground text-base">{r.title}</h3>
@@ -223,12 +226,8 @@ const MoodMapping: React.FC = () => {
                   </div>
                 ))}
               </div>
-
               <button
-                onClick={() => {
-                  setXp((x) => x + 10);
-                  setScreen("done");
-                }}
+                onClick={() => { setXp((x) => x + 10); setScreen("done"); }}
                 className="w-full py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
               >
                 I tried something ✓
@@ -236,30 +235,21 @@ const MoodMapping: React.FC = () => {
             </div>
           )}
 
-          {/* Screen 4: Done */}
+          {/* ═══ Screen 4: Done ═══ */}
           {screen === "done" && (
             <div className="w-full flex flex-col items-center animate-in fade-in duration-500">
-              <MapleSpeechBubble
-                expression="happy"
-                message="You did amazing! I'm so proud of you! 🌟"
-              />
-
-              <div className="w-full bg-card rounded-2xl p-8 border border-border shadow-md mb-5 text-center">
+              <MapleSpeechBubble expression="happy" message="You did amazing! I'm so proud of you! 🌟" />
+              <div className="w-full bg-warm-cream rounded-2xl p-8 border border-border shadow-md mb-5 text-center">
                 <p className="text-3xl font-extrabold text-accent">+10 XP earned! 🎉</p>
                 <div className="mt-5 w-full bg-muted rounded-full h-5 overflow-hidden">
-                  <div
-                    className="h-full bg-secondary rounded-full transition-all duration-700"
-                    style={{ width: `${Math.min((xp % 100) + 10, 100)}%` }}
-                  />
+                  <div className="h-full bg-secondary rounded-full transition-all duration-700" style={{ width: `${Math.min((xp % 100) + 10, 100)}%` }} />
                 </div>
                 <p className="text-sm text-muted-foreground mt-3 font-semibold">{xp} / 100 XP to next level</p>
               </div>
-
               <div className="w-full bg-warm-amber-light rounded-2xl p-6 border border-border mb-6 text-center">
                 <p className="text-4xl font-extrabold text-accent">🔥 {streak}</p>
                 <p className="text-base font-semibold text-foreground mt-1">Day streak!</p>
               </div>
-
               <button
                 onClick={handleReset}
                 className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
@@ -270,7 +260,7 @@ const MoodMapping: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </StoryBookBackground>
   );
 };
 

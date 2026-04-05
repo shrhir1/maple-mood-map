@@ -62,6 +62,11 @@ export default {
           "red-light": "hsl(var(--warm-red-light))",
           amber: "hsl(var(--warm-amber))",
           "amber-light": "hsl(var(--warm-amber-light))",
+          cream: "hsl(var(--warm-cream))",
+        },
+        hill: {
+          DEFAULT: "hsl(var(--hill-green))",
+          light: "hsl(var(--hill-green-light))",
         },
       },
       borderRadius: {
