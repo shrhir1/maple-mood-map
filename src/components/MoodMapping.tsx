@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
-import { Check, Heart } from "lucide-react";
+import { Check, Heart, Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
 import { getMapleResponse } from "@/lib/claude";
 import HappyFace from "./icons/HappyFace";
 import SadFace from "./icons/SadFace";
