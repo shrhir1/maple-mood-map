@@ -96,17 +96,10 @@ const MapleSpeechBubble: React.FC<{ message: string; expression: "waving" | "att
 
 /* ─── Brand badge ─── */
 const BrandBadge: React.FC = () => (
-  <div className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 backdrop-blur-sm"
-    style={{ background: "rgba(255,248,240,0.85)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-    <svg viewBox="0 0 100 120" width="18" height="22">
-      <rect x="30" y="48" width="40" height="52" rx="18" fill="hsl(40, 45%, 94%)" />
-      <ellipse cx="50" cy="38" rx="38" ry="26" fill="hsl(345, 55%, 35%)" />
-      <ellipse cx="50" cy="44" rx="36" ry="5" fill="hsl(345, 50%, 27%)" />
-      <ellipse cx="34" cy="28" rx="6" ry="4" fill="hsl(35, 30%, 68%)" transform="rotate(-10 34 28)" />
-      <ellipse cx="60" cy="22" rx="5.5" ry="3.5" fill="hsl(35, 30%, 68%)" transform="rotate(8 60 22)" />
-    </svg>
-    <span className="text-xs font-extrabold tracking-tight" style={{ color: "#3D2B1F" }}>Mood Mapping</span>
-  </div>
+  <button className="inline-flex items-center rounded-full px-5 py-2.5 backdrop-blur-sm text-base font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
+    style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
+    Mood Mapping
+  </button>
 );
 
 const MoodMapping: React.FC = () => {
