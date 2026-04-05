@@ -66,6 +66,17 @@ const MoodMapping: React.FC = () => {
   const [severity, setSeverity] = useState(5);
   const [xp, setXp] = useState(0);
   const [streak, setStreak] = useState(1);
+  const [animStep, setAnimStep] = useState(0);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+    const t1 = setTimeout(() => setAnimStep(1), 300);
+    const t2 = setTimeout(() => setAnimStep(2), 800);
+    const t3 = setTimeout(() => setAnimStep(3), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
 
   const handleReset = () => {
     setScreen("welcome");
