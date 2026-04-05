@@ -203,9 +203,9 @@ const MoodMapping: React.FC = () => {
               >
                 <div className="relative bg-white rounded-3xl text-center max-w-[340px] mx-auto"
                   style={{ padding: "24px 32px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 rounded-sm" />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45" />
                   <p className="relative font-bold leading-snug" style={{ color: "#3D2B1F", fontSize: 20 }}>
-                    Hey! I'm Maple 🍄
+                    Hi, I'm Maple the Mushroom!
                   </p>
                   <p className="relative mt-1 font-semibold" style={{ color: "#8B6F5E", fontSize: 16 }}>
                     How are you feeling today?
