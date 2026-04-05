@@ -396,7 +396,11 @@ const MoodMapping: React.FC = () => {
 
               <button
                 onClick={() => {
-                  setXp((x) => x + 10);
+                  setXp((x) => {
+                    const newXp = x + 10;
+                    localStorage.setItem("mapleXp", String(newXp));
+                    return newXp;
+                  });
                   if (selectedEmotion) {
                     const updated = saveMoodEntry(selectedEmotion, severity);
                     setMoodHistory(updated);
