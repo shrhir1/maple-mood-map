@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,15 +50,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        maple: {
+          cap: "hsl(var(--maple-cap))",
+          stem: "hsl(var(--maple-stem))",
+          spot: "hsl(var(--maple-spot))",
+          blush: "hsl(var(--maple-blush))",
+        },
+        warm: {
+          green: "hsl(var(--warm-green))",
+          "green-light": "hsl(var(--warm-green-light))",
+          "red-light": "hsl(var(--warm-red-light))",
+          amber: "hsl(var(--warm-amber))",
+          "amber-light": "hsl(var(--warm-amber-light))",
         },
       },
       borderRadius: {
