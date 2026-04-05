@@ -361,7 +361,7 @@ const MoodMapping: React.FC = () => {
 
         {/* ═══ Screen 3: Recommendations ═══ */}
         {screen === "recommendations" && (
-          <div className="min-h-screen flex flex-col items-center justify-center px-5">
+          <div className="min-h-screen flex flex-col items-center justify-center px-5 pb-8">
             <div className="w-full max-w-[460px]">
               <MapleSpeechBubble expression="gentle" message={aiMessage || "Here are some things that might help 💛"} />
               <div className="w-full flex flex-col gap-3 mb-6">
@@ -388,13 +388,6 @@ const MoodMapping: React.FC = () => {
                 </div>
               )}
 
-              {/* In-app support chat for severity 8+ */}
-              {severity >= 8 && (
-                <div className="mb-5">
-                  <MapleSupportChat emotion={selectedEmotion || "unknown"} severity={severity} />
-                </div>
-              )}
-
               <button
                 onClick={() => {
                   setXp((x) => {
@@ -409,11 +402,31 @@ const MoodMapping: React.FC = () => {
                   }
                   setScreen("done");
                 }}
-                className="w-full py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
+                className="w-full py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200 mb-4"
               >
                 I tried something ✓
               </button>
             </div>
+
+            {/* Side chat panel for severity 7+ */}
+            {severity >= 7 && (
+              <Sheet open={showChat} onOpenChange={setShowChat}>
+                <SheetTrigger asChild>
+                  <button
+                    className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all duration-200"
+                    style={{ background: "#6B2737", color: "#FFFFFF" }}
+                  >
+                    <span className="text-2xl">🍄</span>
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[380px] sm:w-[400px] p-0 border-l" style={{ background: "#FFF5F0" }}>
+                  <SheetTitle className="sr-only">Maple Support Chat</SheetTitle>
+                  <div className="h-full">
+                    <MapleSupportChat emotion={selectedEmotion || "unknown"} severity={severity} />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
           </div>
         )}
 
