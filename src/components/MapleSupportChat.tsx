@@ -17,6 +17,14 @@ const SYSTEM_PROMPT =
 const OPENING_MESSAGE =
   "You're not alone 💛 Here are some real resources near you:\n\n🧠 UCSD Counseling — caps.ucsd.edu\n📞 211 San Diego — call 2-1-1 anytime\n💚 NAMI San Diego — namisandiego.org\n\nWhat's on your mind?";
 
+const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }) => {
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { role: "assistant", content: OPENING_MESSAGE },
+  ]);
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isTyping]);
@@ -37,22 +45,16 @@ const OPENING_MESSAGE =
         ...updatedMessages.map((m) => ({ role: m.role, content: m.content })),
       ];
 
-      console.log("[MapleSupportChat] API Key present:", !!import.meta.env.VITE_ASI1_API_KEY);
-      console.log("[MapleSupportChat] Sending messages:", apiMessages.length);
-
-      const res = await fetch("https://gateway.fetch.ai/completion", {
+      const res = await fetch("https://api.asi1.ai/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_ASI1_API_KEY}`,
-          "anthropic-dangerous-direct-browser-access": "true",
         },
-        body: JSON.stringify({ model: "asi1", messages: apiMessages }),
+        body: JSON.stringify({ model: "asi1-mini", messages: apiMessages }),
       });
 
       const data = await res.json();
-      console.log("[MapleSupportChat] API Response status:", res.status);
-      console.log("[MapleSupportChat] API Response data:", JSON.stringify(data));
 
       if (!res.ok) {
         throw new Error(`API Error: ${res.status} - ${data?.message || data?.error || "Unknown error"}`);
@@ -61,7 +63,7 @@ const OPENING_MESSAGE =
       const reply = data?.choices?.[0]?.message?.content || "I'm here for you. Could you tell me more?";
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (err) {
-      console.error("[MapleSupportChat] Full error:", err);
+      console.error("[MapleSupportChat] Error:", err);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: "I'm having trouble connecting right now, but please reach out to UCSD Counseling at caps.ucsd.edu or call 211 San Diego. You're not alone. 💛" },
@@ -87,7 +89,6 @@ const OPENING_MESSAGE =
         height: 380,
       }}
     >
-      {/* Header */}
       <div
         className="flex items-center gap-2 px-4 py-3"
         style={{ background: "#FFF0F3", borderBottom: "1px solid #F5C6D0" }}
@@ -98,22 +99,11 @@ const OPENING_MESSAGE =
         </span>
       </div>
 
-      {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
-        {loadingResources && (
-          <div className="flex justify-start">
-            <div className="rounded-2xl px-4 py-3 flex gap-1.5 items-center"
-              style={{ background: "#FFF8F0", border: "1px solid #F0E0D0" }}>
-              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "0ms" }} />
-              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "150ms" }} />
-              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "300ms" }} />
-            </div>
-          </div>
-        )}
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className="rounded-2xl px-4 py-2.5 max-w-[80%] text-sm leading-relaxed"
+              className="rounded-2xl px-4 py-2.5 max-w-[80%] text-sm leading-relaxed whitespace-pre-line"
               style={
                 msg.role === "user"
                   ? { background: "#6B2737", color: "#FFFFFF" }
@@ -125,7 +115,6 @@ const OPENING_MESSAGE =
           </div>
         ))}
 
-        {/* Typing indicator */}
         {isTyping && (
           <div className="flex justify-start">
             <div
@@ -140,7 +129,6 @@ const OPENING_MESSAGE =
         )}
       </div>
 
-      {/* Input */}
       <div className="px-3 py-3 flex gap-2" style={{ borderTop: "1px solid #F5C6D0" }}>
         <input
           value={input}
