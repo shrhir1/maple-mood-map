@@ -383,6 +383,35 @@ const MoodMapping: React.FC = () => {
                 <p className="text-4xl font-extrabold text-accent">🔥 {streak}</p>
                 <p className="text-base font-semibold mt-1" style={{ color: "#3D2B1F" }}>Day streak!</p>
               </div>
+
+              {/* Mood History pills */}
+              {moodHistory.length > 0 && (
+                <div className="w-full rounded-2xl p-5 border border-border mb-5 bg-white"
+                  style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.05)" }}>
+                  <p className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wide">Mood History</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {moodHistory.slice(-3).reverse().map((entry, i) => (
+                      <div key={i} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold"
+                        style={{ background: "#F5F3FF", color: "#3D2B1F" }}>
+                        <span>{emotionEmojis[entry.emotion] || "🫠"}</span>
+                        <span>{entry.severity}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Recurring emotion warning */}
+              {recurringEmotion && (
+                <div className="w-full rounded-2xl p-5 mb-5 flex gap-3 items-start"
+                  style={{ background: "#FFFBE6", border: "1px solid #F4E3A0" }}>
+                  <span className="text-xl flex-shrink-0">🌿</span>
+                  <p className="text-sm font-semibold" style={{ color: "#5C4A1E" }}>
+                    I've noticed you've been feeling {recurringEmotion.toLowerCase()} a lot lately. It might help to talk to someone you trust.
+                  </p>
+                </div>
+              )}
+
               <button
                 onClick={handleReset}
                 className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
