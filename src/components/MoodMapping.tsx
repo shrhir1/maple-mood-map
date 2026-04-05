@@ -14,7 +14,7 @@ type Screen = "welcome" | "severity" | "loading" | "recommendations" | "done";
 
 interface Emotion {
   label: string;
-  emoji: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
   selectedBg: string;
   selectedBorder: string;
 }
@@ -26,11 +26,11 @@ interface AIRecommendation {
 }
 
 const emotions: Emotion[] = [
-  { label: "Happy", emoji: "😊", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
-  { label: "Sad", emoji: "😢", selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
-  { label: "Anxious", emoji: "😰", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
-  { label: "Angry", emoji: "😠", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
-  { label: "Tired", emoji: "😴", selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
+  { label: "Happy", icon: HappyFace, selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
+  { label: "Sad", icon: SadFace, selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
+  { label: "Anxious", icon: AnxiousFace, selectedBg: "#FFF3E6", selectedBorder: "#F69553" },
+  { label: "Angry", icon: AngryFaceBalloon, selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
+  { label: "Tired", icon: TiredFace, selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
 ];
 
 const getSeverityTip = (value: number): string => {
