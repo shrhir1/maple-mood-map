@@ -138,7 +138,7 @@ const BrandBadge: React.FC = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <button className="inline-flex items-center rounded-full px-7 py-3 backdrop-blur-sm text-lg font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
+      <button onClick={() => navigate("/")} className="inline-flex items-center rounded-full px-7 py-3 backdrop-blur-sm text-lg font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
         style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
         Mood Mapping
       </button>
