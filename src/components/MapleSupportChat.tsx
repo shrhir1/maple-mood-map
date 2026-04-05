@@ -149,6 +149,16 @@ const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }
 
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+        {loadingResources && (
+          <div className="flex justify-start">
+            <div className="rounded-2xl px-4 py-3 flex gap-1.5 items-center"
+              style={{ background: "#FFF8F0", border: "1px solid #F0E0D0" }}>
+              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "0ms" }} />
+              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "150ms" }} />
+              <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#6B2737", animationDelay: "300ms" }} />
+            </div>
+          </div>
+        )}
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
