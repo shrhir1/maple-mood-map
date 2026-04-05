@@ -189,7 +189,11 @@ const MoodMapping: React.FC = () => {
                         transform: isSelected ? "scale(1.03)" : undefined,
                       }}
                     >
-                      <span style={{ fontSize: 36, lineHeight: 1 }}>{e.emoji}</span>
+                      {e.emoji === "angry" ? (
+                        <AngryFace className="w-9 h-9" />
+                      ) : (
+                        <span style={{ fontSize: 36, lineHeight: 1 }}>{e.emoji}</span>
+                      )}
                       <span className="font-bold" style={{ fontSize: 12, color: "#3D2B1F" }}>{e.label}</span>
                       {isSelected && (
                         <div className="w-4 h-4 rounded-full flex items-center justify-center"
