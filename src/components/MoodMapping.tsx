@@ -201,15 +201,16 @@ const MoodMapping: React.FC = () => {
                 className={`mt-4 ${animStep >= 2 ? "anim-bubble-enter" : ""}`}
                 style={{ opacity: animStep >= 2 ? undefined : 0 }}
               >
-                <div className="relative bg-white rounded-3xl text-center max-w-[340px] mx-auto"
-                  style={{ padding: "24px 32px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 rounded-sm" />
-                  <p className="relative font-bold leading-snug" style={{ color: "#3D2B1F", fontSize: 20 }}>
-                    Hey! I'm Maple 🍄
-                  </p>
-                  <p className="relative mt-1 font-semibold" style={{ color: "#8B6F5E", fontSize: 16 }}>
-                    How are you feeling today?
-                  </p>
+                <div className="relative max-w-[340px] mx-auto">
+                  <div className="relative bg-[#E8F0FE] rounded-2xl rounded-bl-md px-5 py-3 text-left"
+                    style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                    <p className="font-semibold leading-snug" style={{ color: "#3D2B1F", fontSize: 17 }}>
+                      Hi, I'm Maple the Mushroom!
+                    </p>
+                    <p className="mt-1 font-medium" style={{ color: "#8B6F5E", fontSize: 15 }}>
+                      How are you feeling today?
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
