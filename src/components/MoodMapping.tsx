@@ -193,7 +193,7 @@ const MoodMapping: React.FC = () => {
                       }}
                     >
                       {e.emoji === "angry" ? (
-                        <AngryFace className="w-9 h-9" />
+                        <AngryFace className="w-14 h-14" />
                       ) : (
                         <span style={{ fontSize: 36, lineHeight: 1 }}>{e.emoji}</span>
                       )}
