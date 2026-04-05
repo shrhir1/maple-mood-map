@@ -257,7 +257,7 @@ const MoodMapping: React.FC = () => {
                   return (
                     <button
                       key={e.label}
-                      onClick={() => setSelectedEmotion(e.label)}
+                      onClick={() => setSelectedEmotion(prev => prev === e.label ? null : e.label)}
                       className={`flex-1 flex flex-col items-center justify-center gap-2 rounded-[20px] transition-all duration-200
                         ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
                       style={{
