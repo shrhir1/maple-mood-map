@@ -349,7 +349,15 @@ const MoodMapping: React.FC = () => {
               )}
 
               <button
-                onClick={() => { setXp((x) => x + 10); setScreen("done"); }}
+                onClick={() => {
+                  setXp((x) => x + 10);
+                  if (selectedEmotion) {
+                    const updated = saveMoodEntry(selectedEmotion, severity);
+                    setMoodHistory(updated);
+                    setRecurringEmotion(getRecurringWarning(updated));
+                  }
+                  setScreen("done");
+                }}
                 className="w-full py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
               >
                 I tried something ✓
