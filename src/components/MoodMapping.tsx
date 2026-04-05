@@ -375,28 +375,10 @@ const MoodMapping: React.FC = () => {
                 </div>
               )}
 
-              {/* Escalation support card for severity 8+ */}
+              {/* In-app support chat for severity 8+ */}
               {severity >= 8 && (
-                <div className="w-full rounded-2xl p-5 mb-5 flex flex-col gap-3"
-                  style={{ background: "#FFF0F3", border: "1px solid #F5C6D0" }}>
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl flex-shrink-0">🌿</span>
-                    <p className="text-sm font-semibold" style={{ color: "#5C4A1E" }}>
-                      It sounds like you're going through something really hard. Maple wants to help you find real support.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      const msg = encodeURIComponent(
-                        `Hi Maple, I've been feeling ${selectedEmotion?.toLowerCase() || "unknown"} at a severity of ${severity} out of 10. Can you help me find real mental health resources and therapists near San Diego that I can contact? I need support.`
-                      );
-                      window.open(`https://asi1.ai/ai/maplemoodmonitor?message=${msg}`, "_blank", "noopener,noreferrer");
-                    }}
-                    className="w-full py-3 rounded-xl text-white font-bold text-base hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
-                    style={{ background: "#6B2737" }}
-                  >
-                    Find support with Maple 🍄
-                  </button>
+                <div className="mb-5">
+                  <MapleSupportChat emotion={selectedEmotion || "unknown"} severity={severity} />
                 </div>
               )}
 
