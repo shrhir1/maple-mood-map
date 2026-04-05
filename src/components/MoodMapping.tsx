@@ -3,7 +3,7 @@ import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
 import { Check, Heart } from "lucide-react";
 import { getMapleResponse } from "@/lib/claude";
-import AngryFace from "./icons/AngryFace";
+
 
 type Screen = "welcome" | "severity" | "loading" | "recommendations" | "done";
 
