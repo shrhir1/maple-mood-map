@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Maple from "./Maple";
 
 type Screen = "welcome" | "severity" | "recommendations" | "done";
@@ -66,6 +66,17 @@ const MoodMapping: React.FC = () => {
   const [severity, setSeverity] = useState(5);
   const [xp, setXp] = useState(0);
   const [streak, setStreak] = useState(1);
+  const [animStep, setAnimStep] = useState(0);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+    const t1 = setTimeout(() => setAnimStep(1), 300);
+    const t2 = setTimeout(() => setAnimStep(2), 800);
+    const t3 = setTimeout(() => setAnimStep(3), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
 
   const handleReset = () => {
     setScreen("welcome");
@@ -84,14 +95,32 @@ const MoodMapping: React.FC = () => {
 
         {/* Screen 1: Welcome */}
         {screen === "welcome" && (
-          <div className="w-full flex flex-col items-center animate-in fade-in duration-500">
-            <MapleSpeechBubble
-              expression="waving"
-              message="Hey! I'm Maple 🍄 How are you feeling today?"
-            />
+          <div className="w-full flex flex-col items-center">
+            {/* Maple entrance */}
+            <div
+              className={animStep >= 1 ? "anim-maple-enter" : ""}
+              style={{ opacity: animStep >= 1 ? undefined : 0 }}
+            >
+              <div className="flex flex-col items-center mb-6">
+                <Maple expression="waving" />
+                {/* Speech bubble */}
+                <div
+                  className={animStep >= 2 ? "anim-bubble-enter" : ""}
+                  style={{ opacity: animStep >= 2 ? undefined : 0 }}
+                >
+                  <div className="relative bg-card rounded-2xl px-5 py-3 mt-2 shadow-sm border border-border max-w-[300px] text-center">
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-card border-l border-t border-border rotate-45" />
+                    <p className="relative text-sm font-semibold text-foreground">
+                      Hey! I'm Maple 🍄 How are you feeling today?
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            {/* Emotion buttons with staggered entrance */}
             <div className="flex justify-center gap-1.5 mb-6 w-full">
-              {emotions.map((e) => (
+              {emotions.map((e, i) => (
                 <button
                   key={e.label}
                   onClick={() => setSelectedEmotion(e.label)}
@@ -99,7 +128,12 @@ const MoodMapping: React.FC = () => {
                     selectedEmotion === e.label
                       ? "border-primary bg-warm-red-light scale-105 shadow-md"
                       : "border-border bg-card hover:border-primary/40"
-                  }`}
+                  } ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
+                  style={{
+                    opacity: animStep >= 3 ? undefined : 0,
+                    animationDelay: animStep >= 3 ? `${i * 100}ms` : undefined,
+                    animationFillMode: "forwards",
+                  }}
                 >
                   <span className="text-xl">{e.emoji}</span>
                   <span className="text-foreground truncate">{e.label}</span>
