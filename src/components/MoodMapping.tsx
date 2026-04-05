@@ -89,9 +89,11 @@ const MoodMapping: React.FC = () => {
   return (
     <StoryBookBackground>
       <div className="min-h-screen flex flex-col items-center">
-        {/* Brand badge - top left */}
-        <div className="w-full max-w-[460px] px-5 pt-4">
-          <BrandBadge />
+        {/* Brand badge - top left, compact */}
+        <div className="w-full max-w-[460px] px-5 pt-3 self-start">
+          <div className="inline-block">
+            <BrandBadge />
+          </div>
         </div>
 
         {/* Main content */}
@@ -99,7 +101,7 @@ const MoodMapping: React.FC = () => {
 
           {/* ═══ Screen 1: Welcome ═══ */}
           {screen === "welcome" && (
-            <div className="w-full flex flex-col items-center -mt-4">
+            <div className="w-full flex-1 flex flex-col items-center justify-between py-2 pb-6">
               {/* Maple — large with glow */}
               <div
                 className={animStep >= 1 ? "anim-maple-enter" : ""}
