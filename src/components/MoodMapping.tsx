@@ -125,6 +125,7 @@ const BrandBadge: React.FC = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-48">
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/mood-history")}>Mood History</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/redeem")}>Redeem Points</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/account")}>Account Details</DropdownMenuItem>
           <DropdownMenuItem
@@ -150,7 +151,9 @@ const MoodMapping: React.FC = () => {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [severity, setSeverity] = useState(5);
-  const [xp, setXp] = useState(0);
+  const [xp, setXp] = useState(() => {
+    try { return parseInt(localStorage.getItem("mapleXp") || "0", 10); } catch { return 0; }
+  });
   const [streak, setStreak] = useState(1);
   const [animStep, setAnimStep] = useState(0);
   const hasAnimated = useRef(false);
@@ -394,7 +397,11 @@ const MoodMapping: React.FC = () => {
 
               <button
                 onClick={() => {
-                  setXp((x) => x + 10);
+                  setXp((x) => {
+                    const newXp = x + 10;
+                    localStorage.setItem("mapleXp", String(newXp));
+                    return newXp;
+                  });
                   if (selectedEmotion) {
                     const updated = saveMoodEntry(selectedEmotion, severity);
                     setMoodHistory(updated);
