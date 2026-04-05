@@ -45,11 +45,19 @@ const StoryBookBackground: React.FC<{ children: React.ReactNode }> = ({ children
     </svg>
 
     {/* Rolling green hills */}
-    <div className="absolute bottom-0 left-0 w-full pointer-events-none">
-      <svg viewBox="0 0 400 80" preserveAspectRatio="none" className="w-full h-[12vh]">
-        <ellipse cx="200" cy="80" rx="280" ry="55" fill="hsl(var(--hill-green-light))" opacity="0.5" />
-        <ellipse cx="320" cy="85" rx="200" ry="45" fill="hsl(var(--hill-green))" opacity="0.45" />
-        <ellipse cx="100" cy="88" rx="220" ry="40" fill="hsl(var(--hill-green))" opacity="0.4" />
+    <div className="absolute bottom-0 left-0 w-full pointer-events-none overflow-hidden">
+      <svg viewBox="0 0 800 100" preserveAspectRatio="none" className="w-full h-[12vh]">
+        <style>{`
+          @keyframes roll1 { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-15px); } }
+          @keyframes roll2 { 0%,100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
+          @keyframes roll3 { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-10px); } }
+        `}</style>
+        <ellipse cx="400" cy="95" rx="520" ry="55" fill="hsl(var(--hill-green-light))" opacity="0.5"
+          style={{ animation: "roll1 8s ease-in-out infinite" }} />
+        <ellipse cx="620" cy="100" rx="400" ry="45" fill="hsl(var(--hill-green))" opacity="0.45"
+          style={{ animation: "roll2 10s ease-in-out infinite" }} />
+        <ellipse cx="180" cy="100" rx="440" ry="40" fill="hsl(var(--hill-green))" opacity="0.4"
+          style={{ animation: "roll3 12s ease-in-out infinite" }} />
       </svg>
     </div>
 
