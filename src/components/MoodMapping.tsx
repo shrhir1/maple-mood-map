@@ -383,13 +383,16 @@ const MoodMapping: React.FC = () => {
                   style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.05)" }}>
                   <p className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wide">Mood History</p>
                   <div className="flex gap-2 flex-wrap">
-                    {moodHistory.slice(-3).reverse().map((entry, i) => (
-                      <div key={i} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold"
-                        style={{ background: "#F5F3FF", color: "#3D2B1F" }}>
-                        <span>{emotionEmojis[entry.emotion] || "🫠"}</span>
-                        <span>{entry.severity}</span>
-                      </div>
-                    ))}
+                    {moodHistory.slice(-3).reverse().map((entry, i) => {
+                      const IconComp = emotionIcons[entry.emotion];
+                      return (
+                        <div key={i} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold"
+                          style={{ background: "#F5F3FF", color: "#3D2B1F" }}>
+                          {IconComp ? <IconComp className="w-6 h-6" /> : <span>{emotionEmojis[entry.emotion] || "🫠"}</span>}
+                          <span>{entry.severity}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
