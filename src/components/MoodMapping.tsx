@@ -419,13 +419,9 @@ const MoodMapping: React.FC = () => {
                 style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
                 <p className="text-3xl font-extrabold text-accent">+10 XP earned! 🎉</p>
                 <div className="mt-5 w-full bg-muted rounded-full h-5 overflow-hidden">
-                  <div className="h-full bg-secondary rounded-full transition-all duration-700" style={{ width: `${Math.min((xp % 100) + 10, 100)}%` }} />
+                  <div className="h-full bg-secondary rounded-full transition-all duration-700" style={{ width: `${Math.min((xp % 50) + 10, 100)}%` }} />
                 </div>
-                <p className="text-sm text-muted-foreground mt-3 font-semibold">{xp} / 100 XP to next level</p>
-              </div>
-              <div className="w-full rounded-2xl p-6 border border-border mb-6 text-center" style={{ background: "#FFFBE6" }}>
-                <p className="text-4xl font-extrabold text-accent">🔥 {streak}</p>
-                <p className="text-base font-semibold mt-1" style={{ color: "#3D2B1F" }}>Day streak!</p>
+                <p className="text-sm text-muted-foreground mt-3 font-semibold">{xp} / 50 XP to next level</p>
               </div>
 
 
