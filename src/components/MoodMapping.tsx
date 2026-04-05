@@ -110,27 +110,30 @@ const MapleSpeechBubble: React.FC<{ message: string; expression: "waving" | "att
 );
 
 /* ─── Brand badge ─── */
-const BrandBadge: React.FC = () => (
-  <div className="inline-flex items-center gap-1">
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="inline-flex items-center justify-center rounded-full p-3 backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
-          <Menu size={22} />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-48">
-        <DropdownMenuItem className="cursor-pointer font-medium">Mood History</DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer font-medium">Account Details</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-    <button className="inline-flex items-center rounded-full px-7 py-3 backdrop-blur-sm text-lg font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
-      style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
-      Mood Mapping
-    </button>
-  </div>
-);
+const BrandBadge: React.FC = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="inline-flex items-center gap-1">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="inline-flex items-center justify-center rounded-full p-3 backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
+            style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
+            <Menu size={22} />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-48">
+          <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/mood-history")}>Mood History</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer font-medium">Account Details</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <button className="inline-flex items-center rounded-full px-7 py-3 backdrop-blur-sm text-lg font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
+        style={{ background: "rgba(255,248,240,0.92)", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: "#3D2B1F" }}>
+        Mood Mapping
+      </button>
+    </div>
+  );
+};
 
 const MoodMapping: React.FC = () => {
   const [screen, setScreen] = useState<Screen>("welcome");
