@@ -127,6 +127,15 @@ const BrandBadge: React.FC = () => {
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/mood-history")}>Mood History</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium">Account Details</DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer font-medium text-destructive"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              navigate("/");
+            }}
+          >
+            Log Out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <button className="inline-flex items-center rounded-full px-7 py-3 backdrop-blur-sm text-lg font-extrabold tracking-tight transition-all hover:scale-105 active:scale-95"
