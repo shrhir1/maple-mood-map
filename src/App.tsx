@@ -25,6 +25,7 @@ const App = () => (
           <Route path="/mood" element={<Index />} />
           <Route path="/mood-history" element={<MoodHistory />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/redeem" element={<RedeemPoints />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
