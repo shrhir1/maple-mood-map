@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import MoodHistory from "./pages/MoodHistory";
 import Account from "./pages/Account";
 import RedeemPoints from "./pages/RedeemPoints";
+import FindServices from "./pages/FindServices";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/mood-history" element={<MoodHistory />} />
           <Route path="/account" element={<Account />} />
           <Route path="/redeem" element={<RedeemPoints />} />
+          <Route path="/find-services" element={<FindServices />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

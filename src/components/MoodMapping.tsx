@@ -127,7 +127,7 @@ const BrandBadge: React.FC = () => {
         <DropdownMenuContent align="start" className="w-48">
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/mood-history")}>Mood History</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/redeem")}>Redeem Points</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/find-services")}>Find Services</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/account")}>Account Details</DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer font-medium text-destructive"
