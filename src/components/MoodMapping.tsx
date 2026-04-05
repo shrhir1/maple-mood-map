@@ -244,6 +244,7 @@ const MoodMapping: React.FC = () => {
                   <span className="text-4xl font-extrabold text-primary">{severity}</span>
                   <span className="text-base text-muted-foreground font-semibold"> / 10</span>
                 </div>
+                <p className="text-xs text-center mt-2 font-mono text-muted-foreground">Current severity: {severity}</p>
               </div>
               <div className="w-full rounded-2xl p-5 border border-border mb-6" style={{ background: "#FFFBE6" }}>
                 <p className="text-sm font-semibold text-center" style={{ color: "#3D2B1F" }}>🍄 {getSeverityTip(severity)}</p>
