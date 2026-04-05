@@ -91,8 +91,20 @@ Deno.serve(async (req) => {
     });
 
     const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Anthropic API error: ${JSON.stringify(data)}`);
+    }
     const text = data.content[0].text;
-    const parsed = JSON.parse(text);
+
+    // Strip markdown fences and extract raw JSON
+    let cleaned = text.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+    const jsonStart = cleaned.indexOf("{");
+    const jsonEnd = cleaned.lastIndexOf("}");
+    if (jsonStart === -1 || jsonEnd === -1) {
+      throw new Error("No JSON found in LLM response");
+    }
+    cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
+    const parsed = JSON.parse(cleaned);
 
     return new Response(JSON.stringify(parsed), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
