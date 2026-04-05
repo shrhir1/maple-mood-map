@@ -14,57 +14,8 @@ interface MapleSupportChatProps {
 const SYSTEM_PROMPT =
   "You are Maple, a warm caring mental wellness mushroom companion. Help the user find real San Diego mental health resources including UCSD Counseling at caps.ucsd.edu, 211 San Diego at 211sandiego.org, and NAMI San Diego at namisandiego.org. Be warm, gentle, and supportive. Always recommend professional help for serious concerns.";
 
-const FALLBACK_OPENING =
-  "You're not alone 💛 Please reach out to UCSD Counseling at caps.ucsd.edu, or call 211 San Diego anytime. I'm also here to talk. What's on your mind?";
-
-const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [loadingResources, setLoadingResources] = useState(true);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  // Fetch SAMHSA resources on mount
-  useEffect(() => {
-    const fetchResources = async () => {
-      try {
-        const res = await fetch(
-          "https://findtreatment.samhsa.gov/locator/listing?sAddr=San+Diego,CA&miles=10&MHonly=1&pageSize=3"
-        );
-        const data = await res.json();
-        const listings = data?.rows || data?.listings || data || [];
-        const facilities = (Array.isArray(listings) ? listings : []).slice(0, 3);
-
-        if (facilities.length > 0) {
-          const facilityList = facilities
-            .map((f: any) => {
-              const name = f.name1 || f.name || f.facilityName || "Unknown Facility";
-              const phone = f.phone || f.telephone || "N/A";
-              const addr = [f.street1 || f.address, f.city, f.state, f.zip]
-                .filter(Boolean)
-                .join(", ") || "Address not available";
-              return `${name} — ${phone} — ${addr}`;
-            })
-            .join("\n\n");
-
-          setMessages([
-            {
-              role: "assistant",
-              content: `You're not alone 💛 Here are some real resources near you that can help:\n\n${facilityList}\n\nI'm also here to talk. What's on your mind?`,
-            },
-          ]);
-        } else {
-          setMessages([{ role: "assistant", content: FALLBACK_OPENING }]);
-        }
-      } catch {
-        setMessages([{ role: "assistant", content: FALLBACK_OPENING }]);
-      } finally {
-        setLoadingResources(false);
-      }
-    };
-
-    fetchResources();
-  }, []);
+const OPENING_MESSAGE =
+  "You're not alone 💛 Here are some real resources near you:\n\n🧠 UCSD Counseling — caps.ucsd.edu\n📞 211 San Diego — call 2-1-1 anytime\n💚 NAMI San Diego — namisandiego.org\n\nWhat's on your mind?";
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
