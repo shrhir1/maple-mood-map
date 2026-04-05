@@ -385,7 +385,7 @@ const MoodMapping: React.FC = () => {
                       const msg = encodeURIComponent(
                         `Hi Maple, I've been feeling ${selectedEmotion?.toLowerCase() || "unknown"} at a severity of ${severity} out of 10. Can you help me find real mental health resources and therapists near San Diego that I can contact? I need support.`
                       );
-                      window.open(`https://asi1.ai/ai/MapleMoodMonitor?message=${msg}`, "_blank", "noopener,noreferrer");
+                      window.open(`https://asi1.ai/ai/maplemoodmonitor?message=${msg}`, "_blank", "noopener,noreferrer");
                     }}
                     className="w-full py-3 rounded-xl text-white font-bold text-base hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
                     style={{ background: "#6B2737" }}
