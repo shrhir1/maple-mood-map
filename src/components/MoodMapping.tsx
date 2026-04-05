@@ -3,13 +3,18 @@ import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
 import { Check, Heart } from "lucide-react";
 import { getMapleResponse } from "@/lib/claude";
+import HappyFace from "./icons/HappyFace";
+import SadFace from "./icons/SadFace";
+import AnxiousFace from "./icons/AnxiousFace";
+import AngryFaceBalloon from "./icons/AngryFaceBalloon";
+import TiredFace from "./icons/TiredFace";
 
 
 type Screen = "welcome" | "severity" | "loading" | "recommendations" | "done";
 
 interface Emotion {
   label: string;
-  emoji: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
   selectedBg: string;
   selectedBorder: string;
 }
@@ -21,11 +26,11 @@ interface AIRecommendation {
 }
 
 const emotions: Emotion[] = [
-  { label: "Happy", emoji: "😊", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
-  { label: "Sad", emoji: "😢", selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
-  { label: "Anxious", emoji: "😰", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
-  { label: "Angry", emoji: "😠", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
-  { label: "Tired", emoji: "😴", selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
+  { label: "Happy", icon: HappyFace, selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
+  { label: "Sad", icon: SadFace, selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
+  { label: "Anxious", icon: AnxiousFace, selectedBg: "#FFF3E6", selectedBorder: "#F69553" },
+  { label: "Angry", icon: AngryFaceBalloon, selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
+  { label: "Tired", icon: TiredFace, selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
 ];
 
 const getSeverityTip = (value: number): string => {
@@ -192,7 +197,7 @@ const MoodMapping: React.FC = () => {
                         transform: isSelected ? "scale(1.03)" : undefined,
                       }}
                     >
-                      <span style={{ fontSize: 36, lineHeight: 1 }}>{e.emoji}</span>
+                      <e.icon className="w-16 h-16" />
                       <span className="font-bold" style={{ fontSize: 12, color: "#3D2B1F" }}>{e.label}</span>
                       {isSelected && (
                         <div className="w-4 h-4 rounded-full flex items-center justify-center"
