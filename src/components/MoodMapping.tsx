@@ -25,6 +25,43 @@ interface AIRecommendation {
   description: string;
 }
 
+interface MoodEntry {
+  emotion: string;
+  severity: number;
+  date: string;
+}
+
+const emotionEmojis: Record<string, string> = {
+  Happy: "😊", Sad: "😢", Anxious: "😰", Angry: "😠", Tired: "😴",
+};
+
+const getMoodHistory = (): MoodEntry[] => {
+  try {
+    return JSON.parse(localStorage.getItem("moodHistory") || "[]");
+  } catch { return []; }
+};
+
+const saveMoodEntry = (emotion: string, severity: number): MoodEntry[] => {
+  const history = getMoodHistory();
+  history.push({ emotion, severity, date: new Date().toISOString() });
+  localStorage.setItem("moodHistory", JSON.stringify(history));
+  return history;
+};
+
+const getRecurringWarning = (history: MoodEntry[]): string | null => {
+  const last7 = history.slice(-7);
+  const counts: Record<string, number> = {};
+  for (const e of last7) {
+    if (e.emotion !== "Happy" && e.severity >= 6) {
+      counts[e.emotion] = (counts[e.emotion] || 0) + 1;
+    }
+  }
+  for (const [emotion, count] of Object.entries(counts)) {
+    if (count >= 3) return emotion;
+  }
+  return null;
+};
+
 const emotions: Emotion[] = [
   { label: "Happy", icon: HappyFace, selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
   { label: "Sad", icon: SadFace, selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
