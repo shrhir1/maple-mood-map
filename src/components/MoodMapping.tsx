@@ -23,7 +23,7 @@ interface AIRecommendation {
 const emotions: Emotion[] = [
   { label: "Sad", emoji: "😢", selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
   { label: "Stressed", emoji: "😤", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
-  { label: "Angry", emoji: "😠", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
+  { label: "Angry", emoji: "angry", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
   { label: "Fearful", emoji: "😨", selectedBg: "#EEFAF3", selectedBorder: "#52B788" },
   { label: "Tired", emoji: "😴", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
 ];
