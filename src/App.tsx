@@ -8,6 +8,7 @@ import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import MoodHistory from "./pages/MoodHistory";
 import Account from "./pages/Account";
+import RedeemPoints from "./pages/RedeemPoints";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
