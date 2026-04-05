@@ -177,6 +177,7 @@ const MoodMapping: React.FC = () => {
                     Rate your level →
                   </button>
                 )}
+              </div>
             </div>
           )}
 
