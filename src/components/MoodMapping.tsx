@@ -123,6 +123,8 @@ const MoodMapping: React.FC = () => {
   const [aiRecommendations, setAiRecommendations] = useState<AIRecommendation[]>([]);
   const [escalate, setEscalate] = useState(false);
   const [escalateMessage, setEscalateMessage] = useState<string | null>(null);
+  const [moodHistory, setMoodHistory] = useState<MoodEntry[]>(getMoodHistory());
+  const [recurringEmotion, setRecurringEmotion] = useState<string | null>(null);
 
   useEffect(() => {
     if (hasAnimated.current) return;
