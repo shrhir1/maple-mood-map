@@ -56,10 +56,10 @@ const StoryBookBackground: React.FC<{ children: React.ReactNode }> = ({ children
 
     {/* Rolling hills */}
     <div className="absolute bottom-0 left-0 w-full pointer-events-none">
-      <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="w-full h-[18vh]">
-        <ellipse cx="200" cy="120" rx="280" ry="80" fill="hsl(var(--hill-green-light))" opacity="0.5" />
-        <ellipse cx="320" cy="130" rx="200" ry="70" fill="hsl(var(--hill-green))" opacity="0.4" />
-        <ellipse cx="100" cy="135" rx="220" ry="65" fill="hsl(var(--hill-green))" opacity="0.35" />
+      <svg viewBox="0 0 400 80" preserveAspectRatio="none" className="w-full h-[10vh]">
+        <ellipse cx="200" cy="80" rx="280" ry="55" fill="hsl(var(--hill-green-light))" opacity="0.5" />
+        <ellipse cx="320" cy="85" rx="200" ry="45" fill="hsl(var(--hill-green))" opacity="0.4" />
+        <ellipse cx="100" cy="88" rx="220" ry="40" fill="hsl(var(--hill-green))" opacity="0.35" />
       </svg>
     </div>
 
