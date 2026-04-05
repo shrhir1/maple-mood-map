@@ -166,6 +166,7 @@ const MoodMapping: React.FC = () => {
   const [escalateMessage, setEscalateMessage] = useState<string | null>(null);
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>(getMoodHistory());
   const [recurringEmotion, setRecurringEmotion] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     if (hasAnimated.current) return;
