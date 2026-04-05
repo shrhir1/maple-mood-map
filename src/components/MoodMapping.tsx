@@ -89,9 +89,11 @@ const MoodMapping: React.FC = () => {
   return (
     <StoryBookBackground>
       <div className="min-h-screen flex flex-col items-center">
-        {/* Brand badge - top left */}
-        <div className="w-full max-w-[460px] px-5 pt-4">
-          <BrandBadge />
+        {/* Brand badge - top left, compact */}
+        <div className="w-full max-w-[460px] px-5 pt-3 self-start">
+          <div className="inline-block">
+            <BrandBadge />
+          </div>
         </div>
 
         {/* Main content */}
@@ -99,7 +101,7 @@ const MoodMapping: React.FC = () => {
 
           {/* ═══ Screen 1: Welcome ═══ */}
           {screen === "welcome" && (
-            <div className="w-full flex flex-col items-center -mt-4">
+            <div className="w-full flex-1 flex flex-col items-center justify-between py-2 pb-6">
               {/* Maple — large with glow */}
               <div
                 className={animStep >= 1 ? "anim-maple-enter" : ""}
@@ -133,46 +135,49 @@ const MoodMapping: React.FC = () => {
                 </div>
               </div>
 
-              {/* Emotion buttons — warm rounded cards */}
-              <div className="grid grid-cols-5 gap-2.5 mt-7 mb-5 w-full">
-                {emotions.map((e, i) => {
-                  const isSelected = selectedEmotion === e.label;
-                  return (
-                    <button
-                      key={e.label}
-                      onClick={() => setSelectedEmotion(e.label)}
-                      className={`flex flex-col items-center gap-1.5 py-4 px-1 rounded-[20px] border-2 transition-all duration-200 font-semibold
-                        ${isSelected
-                          ? `border-primary ${e.tint} shadow-lg ring-2 ring-primary/20 scale-105`
-                          : "border-border bg-warm-cream shadow-sm hover:border-primary/30 hover:shadow-md hover:scale-[1.03]"
-                        }
-                        ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
-                      style={{
-                        opacity: animStep >= 3 ? undefined : 0,
-                        animationDelay: animStep >= 3 ? `${i * 100}ms` : undefined,
-                        animationFillMode: "forwards",
-                      }}
-                    >
-                      <span className="text-[40px] leading-none">{e.emoji}</span>
-                      <span className="text-foreground text-[11px] font-bold mt-0.5">{e.label}</span>
-                      {isSelected && (
-                        <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
-                          <Check className="w-2.5 h-2.5 text-primary-foreground" strokeWidth={3} />
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+              {/* Emotion buttons + CTA grouped at the bottom */}
+              <div className="w-full">
+                <div className="grid grid-cols-5 gap-2.5 mb-4 w-full">
+                  {emotions.map((e, i) => {
+                    const isSelected = selectedEmotion === e.label;
+                    return (
+                      <button
+                        key={e.label}
+                        onClick={() => setSelectedEmotion(e.label)}
+                        className={`flex flex-col items-center justify-center gap-2 min-h-[110px] rounded-[20px] transition-all duration-200 font-semibold
+                          ${isSelected
+                            ? "shadow-lg scale-105 border-b-[3px]"
+                            : "bg-warm-cream shadow hover:shadow-md hover:scale-[1.03]"
+                          }
+                          ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
+                        style={{
+                          opacity: animStep >= 3 ? undefined : 0,
+                          animationDelay: animStep >= 3 ? `${i * 100}ms` : undefined,
+                          animationFillMode: "forwards",
+                          ...(isSelected ? { backgroundColor: "#FFF0E0", borderBottomColor: "#FF8A65" } : {}),
+                        }}
+                      >
+                        <span className="text-[48px] leading-none">{e.emoji}</span>
+                        <span className="text-foreground text-xs font-extrabold">{e.label}</span>
+                        {isSelected && (
+                          <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5 text-primary-foreground" strokeWidth={3} />
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
 
-              {selectedEmotion && (
-                <button
-                  onClick={() => setScreen("severity")}
-                  className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 transition-all duration-200 hover:scale-[1.02] animate-in slide-in-from-bottom-2 duration-300"
-                >
-                  Rate your level →
-                </button>
-              )}
+                {selectedEmotion && (
+                  <button
+                    onClick={() => setScreen("severity")}
+                    className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 transition-all duration-200 hover:scale-[1.02] animate-in slide-in-from-bottom-2 duration-300"
+                  >
+                    Rate your level →
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
