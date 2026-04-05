@@ -3,7 +3,7 @@ import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
 import { Check, Heart } from "lucide-react";
 import { getMapleResponse } from "@/lib/claude";
-import AngryFace from "./icons/AngryFace";
+
 
 type Screen = "welcome" | "severity" | "loading" | "recommendations" | "done";
 
@@ -21,11 +21,11 @@ interface AIRecommendation {
 }
 
 const emotions: Emotion[] = [
+  { label: "Happy", emoji: "😊", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
   { label: "Sad", emoji: "😢", selectedBg: "#E8F4FD", selectedBorder: "#5BA4CF" },
-  { label: "Stressed", emoji: "😤", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
-  { label: "Angry", emoji: "angry", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
-  { label: "Fearful", emoji: "😨", selectedBg: "#EEFAF3", selectedBorder: "#52B788" },
-  { label: "Tired", emoji: "😴", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
+  { label: "Anxious", emoji: "😰", selectedBg: "#F3EEFF", selectedBorder: "#9B72CF" },
+  { label: "Angry", emoji: "😠", selectedBg: "#FFEDED", selectedBorder: "#E05C5C" },
+  { label: "Tired", emoji: "😴", selectedBg: "#EEF2FF", selectedBorder: "#6366F1" },
 ];
 
 const getSeverityTip = (value: number): string => {
@@ -192,11 +192,7 @@ const MoodMapping: React.FC = () => {
                         transform: isSelected ? "scale(1.03)" : undefined,
                       }}
                     >
-                      {e.emoji === "angry" ? (
-                        <AngryFace className="w-14 h-14" />
-                      ) : (
-                        <span style={{ fontSize: 36, lineHeight: 1 }}>{e.emoji}</span>
-                      )}
+                      <span style={{ fontSize: 36, lineHeight: 1 }}>{e.emoji}</span>
                       <span className="font-bold" style={{ fontSize: 12, color: "#3D2B1F" }}>{e.label}</span>
                       {isSelected && (
                         <div className="w-4 h-4 rounded-full flex items-center justify-center"
