@@ -3,6 +3,11 @@ import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
 import { Check, Heart } from "lucide-react";
 import { getMapleResponse } from "@/lib/claude";
+import HappyFace from "./icons/HappyFace";
+import SadFace from "./icons/SadFace";
+import AnxiousFace from "./icons/AnxiousFace";
+import AngryFaceBalloon from "./icons/AngryFaceBalloon";
+import TiredFace from "./icons/TiredFace";
 
 
 type Screen = "welcome" | "severity" | "loading" | "recommendations" | "done";
