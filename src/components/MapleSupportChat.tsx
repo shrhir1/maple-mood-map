@@ -45,20 +45,31 @@ const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }
         ...updatedMessages.map((m) => ({ role: m.role, content: m.content })),
       ];
 
+      console.log("[MapleSupportChat] API Key present:", !!import.meta.env.VITE_ASI1_API_KEY);
+      console.log("[MapleSupportChat] Sending messages:", apiMessages.length);
+
       const res = await fetch("https://gateway.fetch.ai/completion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_ASI1_API_KEY}`,
+          "anthropic-dangerous-direct-browser-access": "true",
         },
         body: JSON.stringify({ model: "asi1", messages: apiMessages }),
       });
 
       const data = await res.json();
+      console.log("[MapleSupportChat] API Response status:", res.status);
+      console.log("[MapleSupportChat] API Response data:", JSON.stringify(data));
+
+      if (!res.ok) {
+        throw new Error(`API Error: ${res.status} - ${data?.message || data?.error || "Unknown error"}`);
+      }
+
       const reply = data?.choices?.[0]?.message?.content || "I'm here for you. Could you tell me more?";
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (err) {
-      console.error("Chat error:", err);
+      console.error("[MapleSupportChat] Full error:", err);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: "I'm having trouble connecting right now, but please reach out to UCSD Counseling at caps.ucsd.edu or call 211 San Diego. You're not alone. 💛" },
