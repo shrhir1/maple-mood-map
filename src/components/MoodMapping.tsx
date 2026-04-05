@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import Maple from "./Maple";
 import StoryBookBackground from "./StoryBookBackground";
-import { Check } from "lucide-react";
+import { Check, Heart } from "lucide-react";
+import { getMapleResponse } from "@/lib/claude";
 
-type Screen = "welcome" | "severity" | "recommendations" | "done";
+type Screen = "welcome" | "severity" | "loading" | "recommendations" | "done";
 
 interface Emotion {
   label: string;
   emoji: string;
   selectedBg: string;
   selectedBorder: string;
+}
+
+interface AIRecommendation {
+  icon: string;
+  title: string;
+  description: string;
 }
 
 const emotions: Emotion[] = [
@@ -20,13 +27,6 @@ const emotions: Emotion[] = [
   { label: "Tired", emoji: "😴", selectedBg: "#FFFBE6", selectedBorder: "#F4C430" },
 ];
 
-const recommendations = [
-  { icon: "📝", title: "Journal it out", description: "Write down your thoughts for 5 minutes. No rules, just let it flow." },
-  { icon: "🚶", title: "Take a short walk", description: "Even 10 minutes outside can reset your mood." },
-  { icon: "📞", title: "Call a friend", description: "Hearing a friendly voice can make a big difference." },
-  { icon: "🧘", title: "Try a meditation", description: "Close your eyes, breathe deep, and let go for a few minutes." },
-];
-
 const getSeverityTip = (value: number): string => {
   if (value <= 2) return "That's manageable! A small break might be all you need. 🌿";
   if (value <= 4) return "You're noticing it — that's self-awareness! Let's find something gentle. 🌱";
@@ -35,11 +35,14 @@ const getSeverityTip = (value: number): string => {
   return "I hear you. You're not alone in this. Let's take it one step at a time. 💕";
 };
 
-const MapleSpeechBubble: React.FC<{ message: string; expression: "waving" | "attentive" | "gentle" | "happy" }> = ({
+const MapleSpeechBubble: React.FC<{ message: string; expression: "waving" | "attentive" | "gentle" | "happy"; bouncing?: boolean }> = ({
   message,
+  bouncing = false,
 }) => (
   <div className="flex flex-col items-center mb-6">
-    <Maple expression="waving" className="w-[130px] h-[156px]" />
+    <div className={bouncing ? "animate-bounce" : ""}>
+      <Maple expression="waving" className="w-[130px] h-[156px]" />
+    </div>
     <div className="relative bg-white rounded-2xl px-6 py-4 mt-2 max-w-[300px] text-center"
       style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
       <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 rounded-sm" />
@@ -72,6 +75,12 @@ const MoodMapping: React.FC = () => {
   const [animStep, setAnimStep] = useState(0);
   const hasAnimated = useRef(false);
 
+  // AI response state
+  const [aiMessage, setAiMessage] = useState<string>("");
+  const [aiRecommendations, setAiRecommendations] = useState<AIRecommendation[]>([]);
+  const [escalate, setEscalate] = useState(false);
+  const [escalateMessage, setEscalateMessage] = useState<string | null>(null);
+
   useEffect(() => {
     if (hasAnimated.current) return;
     hasAnimated.current = true;
@@ -81,11 +90,39 @@ const MoodMapping: React.FC = () => {
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
 
+  const handleShowRecommendations = async () => {
+    if (!selectedEmotion) return;
+    setScreen("loading");
+    try {
+      const result = await getMapleResponse(selectedEmotion, severity);
+      setAiMessage(result.mapleMessage);
+      setAiRecommendations(result.recommendations);
+      setEscalate(result.escalate);
+      setEscalateMessage(result.escalateMessage);
+      setScreen("recommendations");
+    } catch (error) {
+      console.error("AI call failed, using fallback:", error);
+      setAiMessage("Here are some things that might help 💛");
+      setAiRecommendations([
+        { icon: "📝", title: "Journal it out", description: "Write down your thoughts for 5 minutes. No rules, just let it flow." },
+        { icon: "🚶", title: "Take a short walk", description: "Even 10 minutes outside can reset your mood." },
+        { icon: "🧘", title: "Try a meditation", description: "Close your eyes, breathe deep, and let go for a few minutes." },
+      ]);
+      setEscalate(false);
+      setEscalateMessage(null);
+      setScreen("recommendations");
+    }
+  };
+
   const handleReset = () => {
     setScreen("welcome");
     setSelectedEmotion(null);
     setSeverity(5);
     setStreak((s) => s + 1);
+    setAiMessage("");
+    setAiRecommendations([]);
+    setEscalate(false);
+    setEscalateMessage(null);
   };
 
   return (
@@ -94,20 +131,15 @@ const MoodMapping: React.FC = () => {
         {/* ═══ Screen 1: Welcome ═══ */}
         {screen === "welcome" && (
           <div className="min-h-screen flex flex-col px-4 pb-[12vh]">
-            {/* Top: Brand badge */}
             <div className="pt-3 pl-1">
               <BrandBadge />
             </div>
-
-            {/* Middle content: Maple + Speech bubble — centered */}
             <div className="flex-1 flex flex-col items-center justify-center">
-              {/* Maple with glow */}
               <div
                 className={`${animStep >= 1 ? "anim-maple-enter" : ""}`}
                 style={{ opacity: animStep >= 1 ? undefined : 0 }}
               >
                 <div className="relative flex items-center justify-center">
-                  {/* Warm glow */}
                   <div className="absolute w-[280px] h-[280px] rounded-full"
                     style={{
                       background: "radial-gradient(circle, rgba(255,180,120,0.3) 0%, transparent 70%)",
@@ -117,17 +149,12 @@ const MoodMapping: React.FC = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Speech bubble */}
               <div
                 className={`mt-4 ${animStep >= 2 ? "anim-bubble-enter" : ""}`}
                 style={{ opacity: animStep >= 2 ? undefined : 0 }}
               >
                 <div className="relative bg-white rounded-3xl text-center max-w-[340px] mx-auto"
-                  style={{
-                    padding: "24px 32px",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
-                  }}>
+                  style={{ padding: "24px 32px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
                   <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 rounded-sm" />
                   <p className="relative font-bold leading-snug" style={{ color: "#3D2B1F", fontSize: 20 }}>
                     Hey! I'm Maple 🍄
@@ -138,8 +165,6 @@ const MoodMapping: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            {/* Bottom: Emotion buttons + CTA */}
             <div className="w-full max-w-[460px] mx-auto">
               <div className="flex gap-2.5 mb-4 w-full">
                 {emotions.map((e, i) => {
@@ -175,7 +200,6 @@ const MoodMapping: React.FC = () => {
                   );
                 })}
               </div>
-
               {selectedEmotion && (
                 <button
                   onClick={() => setScreen("severity")}
@@ -217,7 +241,7 @@ const MoodMapping: React.FC = () => {
                 <p className="text-sm font-semibold text-center" style={{ color: "#3D2B1F" }}>🍄 {getSeverityTip(severity)}</p>
               </div>
               <button
-                onClick={() => setScreen("recommendations")}
+                onClick={handleShowRecommendations}
                 className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
               >
                 Show me what helps →
@@ -226,13 +250,33 @@ const MoodMapping: React.FC = () => {
           </div>
         )}
 
+        {/* ═══ Loading Screen ═══ */}
+        {screen === "loading" && (
+          <div className="min-h-screen flex flex-col items-center justify-center px-5">
+            <div className="w-full max-w-[460px]">
+              <MapleSpeechBubble
+                expression="gentle"
+                message="Let me think of something for you... 🍄"
+                bouncing
+              />
+              <div className="flex justify-center">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-primary/40 animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <div className="w-3 h-3 rounded-full bg-primary/40 animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <div className="w-3 h-3 rounded-full bg-primary/40 animate-bounce" style={{ animationDelay: "300ms" }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ═══ Screen 3: Recommendations ═══ */}
         {screen === "recommendations" && (
           <div className="min-h-screen flex flex-col items-center justify-center px-5">
             <div className="w-full max-w-[460px]">
-              <MapleSpeechBubble expression="gentle" message="Here are some things that might help 💛" />
+              <MapleSpeechBubble expression="gentle" message={aiMessage || "Here are some things that might help 💛"} />
               <div className="w-full flex flex-col gap-3 mb-6">
-                {recommendations.map((r, i) => (
+                {aiRecommendations.map((r, i) => (
                   <div key={i} className="bg-white rounded-2xl p-5 flex gap-4 items-start hover:scale-[1.01] transition-all duration-200 cursor-pointer"
                     style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.07)" }}>
                     <span className="text-3xl mt-0.5">{r.icon}</span>
@@ -243,6 +287,18 @@ const MoodMapping: React.FC = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Escalation banner */}
+              {escalate && escalateMessage && (
+                <div className="w-full rounded-2xl p-5 mb-6 flex gap-3 items-start"
+                  style={{ background: "#FFF0F3", border: "1px solid #F5C6D0" }}>
+                  <Heart className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: "#E05C7A" }} fill="#E05C7A" />
+                  <p className="text-sm font-semibold" style={{ color: "#8B3A4A" }}>
+                    {escalateMessage}
+                  </p>
+                </div>
+              )}
+
               <button
                 onClick={() => { setXp((x) => x + 10); setScreen("done"); }}
                 className="w-full py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
