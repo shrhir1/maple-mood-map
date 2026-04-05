@@ -79,7 +79,7 @@ const MoodMapping: React.FC = () => {
       <div className="w-full max-w-[390px] px-5 py-8 flex flex-col items-center">
         {/* Header */}
         <h1 className="text-xl font-extrabold text-primary mb-6 tracking-tight">
-          🍄 Mood Mapping
+          Mood Mapping
         </h1>
 
         {/* Screen 1: Welcome */}
