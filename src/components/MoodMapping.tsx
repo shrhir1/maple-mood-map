@@ -35,6 +35,14 @@ const emotionEmojis: Record<string, string> = {
   Happy: "😊", Sad: "😢", Anxious: "😰", Angry: "😠", Tired: "😴",
 };
 
+const emotionIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+  Angry: AngryFaceBalloon,
+  Anxious: AnxiousFace,
+  Tired: TiredFace,
+  Sad: SadFace,
+  Happy: HappyFace,
+};
+
 const getMoodHistory = (): MoodEntry[] => {
   try {
     return JSON.parse(localStorage.getItem("moodHistory") || "[]");
