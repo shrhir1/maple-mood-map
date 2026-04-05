@@ -82,11 +82,11 @@ const MapleSupportChat: React.FC<MapleSupportChatProps> = ({ emotion, severity }
 
   return (
     <div
-      className="w-full rounded-2xl overflow-hidden flex flex-col"
+      className="w-full rounded-2xl overflow-hidden flex flex-col h-full"
       style={{
         background: "#FFF5F0",
         border: "1px solid #F5C6D0",
-        height: 380,
+        minHeight: 380,
       }}
     >
       <div
