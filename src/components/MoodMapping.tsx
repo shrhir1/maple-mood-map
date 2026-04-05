@@ -126,7 +126,7 @@ const BrandBadge: React.FC = () => {
         <DropdownMenuContent align="start" className="w-48">
           <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/mood-history")}>Mood History</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer font-medium">Find Services</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer font-medium">Account Details</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer font-medium" onClick={() => navigate("/account")}>Account Details</DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer font-medium text-destructive"
             onClick={async () => {
@@ -257,7 +257,7 @@ const MoodMapping: React.FC = () => {
                   return (
                     <button
                       key={e.label}
-                      onClick={() => setSelectedEmotion(e.label)}
+                      onClick={() => setSelectedEmotion(prev => prev === e.label ? null : e.label)}
                       className={`flex-1 flex flex-col items-center justify-center gap-2 rounded-[20px] transition-all duration-200
                         ${animStep >= 3 ? "anim-ui-fade-up" : ""}`}
                       style={{
