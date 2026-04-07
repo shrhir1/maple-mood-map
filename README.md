@@ -1,30 +1,122 @@
-# Mood Mapping with Maple
+# 🍄 Mood Mapping
+### AI Mental Wellness Companion | DiamondHacks 2026 — Best Mobile Hack Winner
 
-## Inspiration
-Emotional intelligence and mood awareness are often overlooked in our daily lives. We were inspired by the idea that tracking your emotions not just when you're in crisis, but every day can reveal powerful patterns about your mental health. Many people struggle to recognize when they need help, and even more don't know where to turn when they do. We wanted to build a companion that motivates you to check in with with yourself and gently guides you toward support when things get hard.
+Mood Mapping is an AI-powered mental wellness web app featuring **Maple**, a supportive mushroom companion that guides users through daily emotion check-ins and connects them to real professional help when they need it most.
 
-## What it does
-Mood Mapping is an AI-powered mental wellness web app featuring Maple, a supportive mushroom mascot. Users check in daily by selecting one of five emotions (Happy, Sad, Anxious, Angry, Tired) and rating their severity from 1–10. Claude AI analyzes the input and generates personalized lifestyle recommendations tailored to the specific emotion and severity level. For high severity scores (7+), Maple opens a live chat powered by the Fetch.ai ASI:One, in which the agent that provides real local mental health resources and therapist support. The app also tracks mood history over time, detecting patterns like repeated high-severity check-ins and surfacing gentle nudges through a Fetch.ai agent. A gamification layer (XP, streaks, mood history) keeps users engaged and coming back daily.
+---
 
-## How we built it
-Frontend: Built with React using Lovable as our AI-powered development platform, designed with a  warm aesthetic and Nunito font
-Mascot & Emotions Characters: Maple is a custom mushroom character designed and built on figma which was integrated as an image asset with CSS animations (floating, bouncing, tilting) across all 4 screens. The 5 emotions were also build through figma and we decided to make them shaped like balloons to represent that emotions can be temporary.
-Claude API: Powers the core recommendation engine, takes emotion + severity as input and returns a structured JSON response with a personalized message, 3 tailored recommendations, and an escalation flag for high severity
-Fetch.ai ASI:One: Our Maple Support Chat is powered by the ASI1 API, giving users a real conversational agent that provides warm support and connects them to local mental health resources
-Mood Pattern Tracker: Built using localStorage to store every check-in and detect patterns across sessions
-Gamification: XP system, daily streak counter, and mood history pills on the done screen
+## 🌿 Live Demo
+[Try Mood Mapping →](https://maple-mood-map.lovable.app/)
 
-## Challenges we ran into
-Integrating the Fetch.ai agent as a real in-app chatbot rather than just a link — we had to debug CORS issues, wrong API endpoints, and figure out the correct ASI1 API format Getting Claude to return consistent raw JSON without markdown code fences — solved by explicitly instructing the model in the system prompt and stripping backticks before parsing
+---
 
-## Accomplishments that we're proud of
-Building a fully functional, polished mental wellness app in under 24 hours
-Maple feels genuinely alive — the animations, expressions, and warm language make her feel like a real companion, not just a UI element
-The escalation flow works end to end, a severity 7+ check-in triggers Claude to flag it, the pattern tracker detects repeated distress, and the Fetch.ai chat connects users to real support!
-Successfully integrating two sponsor APIs (Fetch.ai ASI:One, Lovable) into a cohesive product experience.
+## ✨ Features
 
-## What we learned
-Building Mood Mapping taught us how much thoughtful design matters in mental health tools. The difference between a user feeling supported versus feeling clinical comes down to small details like word choice, animation timing, and mascot expressions. We also learned how critical it is to provide real-time, accurate data in these situations. When someone is in distress, outdated or generic resources can do more harm than good, which is why connecting users to live, local support through the Fetch.ai agent was so important to get right. In addition, we deepened our understanding of prompt engineering and learnt how to use new tools like Lovable, we have never used before!
+- **Daily emotion check-in** — 5 emotions (Happy, Sad, Anxious, Angry, Tired) with a 1–10 severity slider
+- **Claude AI recommendations** — personalized lifestyle suggestions generated in real time based on emotion type and severity level
+- **Automatic escalation** — severity 8+ triggers Maple's live support chat powered by the Fetch.ai ASI:One agent
+- **Live crisis support chat** — Fetch.ai ASI:One agent connects high-severity users to real local mental health resources and therapists
+- **Mood pattern detection** — sliding-window analysis across 7 sessions detects recurring high-severity emotions and surfaces gentle interventions
+- **Gamification layer** — XP system, daily streak counter, and mood history visualization to drive consistent engagement
+- **Find Services tab** — always-accessible mental health resources including UCSD Counseling, 211 San Diego, and NAMI San Diego
 
-## What's next for Mood Mapping
-Live therapist search using Perplexity API to find real, available therapists by location and insurance in real time. We can have Maple evolve in which the appearance and personality grow with your streak! The push notifications powered by the Fetch.ai agent — Maple checks in if you haven't logged a mood in 2+ days.
+---
+
+## 🧠 How It Works
+
+```
+User selects emotion + severity
+        ↓
+Claude API analyzes input
+        ↓
+Severity 1–7 → Personalized lifestyle recommendations
+Severity 8+  → Escalation banner + Fetch.ai live support chat
+        ↓
+Session saved to localStorage
+        ↓
+Pattern detection runs across last 7 sessions
+        ↓
+3+ high-severity same emotion → Gentle intervention triggered
+```
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React, Lovable, Nunito font |
+| AI Recommendations | Anthropic Claude API (claude-sonnet-4) |
+| Live Support Agent | Fetch.ai ASI:One (ASI1 API) |
+| Mood Pattern Tracking | localStorage, sliding-window analysis |
+| Styling | Custom CSS, Headspace-inspired design |
+| Deployment | Lovable (live URL above) |
+
+---
+
+## 🚀 Getting Started
+
+```bash
+# Clone the repo
+git clone https://github.com/shrhir1/maple-mood-map.git
+cd maple-mood-map
+
+# Install dependencies
+npm install
+
+# Add your API keys to .env
+VITE_ANTHROPIC_API_KEY=your_claude_api_key
+VITE_ASI1_API_KEY=your_fetch_ai_key
+
+# Run locally
+npm run dev
+```
+
+> ⚠️ Never commit your `.env` file. Make sure `.env` is in your `.gitignore`.
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── MoodMapping.tsx        # Main app component, screen flow
+│   ├── MapleSupportChat.tsx   # Fetch.ai ASI:One chat integration
+│   └── StoryBookBackground.tsx # Animated background
+├── lib/
+│   └── claude.ts              # Claude API integration + system prompt
+└── main.tsx
+```
+
+---
+
+## 🌱 What's Next
+
+- **Perplexity API** — live therapist search by location and insurance in real time
+- **Apple HealthKit** — passive mood detection using heart rate and sleep data
+- **Maple evolves** — mascot appearance grows with your streak
+- **Push notifications** — Fetch.ai agent nudges you if you haven't checked in for 2+ days
+
+---
+
+## 🏆 Awards
+
+- **Best Mobile Hack** — DiamondHacks 2026, UC San Diego
+
+---
+
+## 👥 Team
+
+- **Anush Harish**
+- **Shreya Hiremath**
+
+---
+
+## 📄 License
+
+MIT License — feel free to build on this.
+
+---
+
+*Built with 🍄 and zero sleep at DiamondHacks 2026*
